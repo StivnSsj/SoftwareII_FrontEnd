@@ -9,6 +9,7 @@ import co.edu.unicauca.mvc.modelos.Conferencia;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
+import javax.swing.JTable;
 
 /**
  * Clase que representa una ventana interna para listar conferencias.
@@ -31,33 +32,8 @@ public class VtnListarConferencias extends javax.swing.JInternalFrame {
         //agregaDatos();
         llenarTabla();
     }
-    
-    /**
-     * Agrega datos de ejemplo al servicio de almacenamiento de conferencias.
-     * Utilizado para fines de prueba.
-     */
 
-//    public void agregaDatos() {
-//        try {
-//            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-//            Date fechaInicio = formatoFecha.parse("24/09/2024");
-//            Date fechaFin = formatoFecha.parse("30/09/2024");
-//
-//            Conferencia objConferencia1 = new Conferencia();
-//            this.objServicioAlmacenamiento.almacenarConferencia(objConferencia1);
-//
-//            Conferencia objConferencia2 = new Conferencia();
-//            this.objServicioAlmacenamiento.almacenarConferencia(objConferencia2);
-//
-//            Conferencia objConferencia3 = new Conferencia(3, "Conferencia3", fechaInicio, fechaFin, "Ubicacion3");
-//            this.objServicioAlmacenamiento.almacenarConferencia(objConferencia3);
-//
-//            Conferencia objConferencia4 = new Conferencia(4, "Conferencia4", fechaInicio, fechaFin, "Ubicacion4");
-//            this.objServicioAlmacenamiento.almacenarConferencia(objConferencia4);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
     
     /**
      * Gestiona la visibilidad de los elementos de la ventana según el rol del usuario.
@@ -67,10 +43,10 @@ public class VtnListarConferencias extends javax.swing.JInternalFrame {
 
     public void gestionRol(String rol) {
         switch (rol) {
-            case "Autor":
+            case "AUTOR":
                 jButtonRegistrar.setVisible(false);
                 break;
-            case "Organizador":
+            case "ORGANIZADOR":
                 jButtonRegistrar.setVisible(true);
                 break;
             default:
@@ -96,19 +72,25 @@ public class VtnListarConferencias extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) this.jTableListadoConferencias.getModel();
         limpiarTabla();
         ArrayList<Conferencia> listaConferencias = (ArrayList<Conferencia>) this.objServicioAlmacenamiento.listarConferencias();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         for (int i = 0; i < listaConferencias.size(); i++) {
             String[] fila = {
                 listaConferencias.get(i).getNombre(),
-                formatter.format(listaConferencias.get(i).getFechaInicio()),
-                formatter.format(listaConferencias.get(i).getFechaFin()),
+                listaConferencias.get(i).getFechaInicio(),
+                listaConferencias.get(i).getFechaFin(),
                 listaConferencias.get(i).getUbicacion()
             };
             model.addRow(fila);
         }
 
     }
+
+    public JTable getjTableListadoConferencias() {
+        return jTableListadoConferencias;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

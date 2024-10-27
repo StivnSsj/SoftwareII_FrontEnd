@@ -2,6 +2,7 @@ package co.edu.unicauca.mvc.vistas.adminConferencia;
 
 import co.edu.unicauca.mvc.controladores.ConferenciaServices;
 import co.edu.unicauca.mvc.modelos.Conferencia;
+import co.edu.unicauca.mvc.modelos.User;
 import co.edu.unicauca.mvc.utilidades.Utilidades;
 import java.awt.Color;
 import java.text.ParseException;
@@ -193,28 +194,37 @@ public class VtnRegistrarConferencia extends javax.swing.JFrame {
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
         String nombre, ubicacion;
         Date fechaInicio, fechaFin;
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formato1 = new SimpleDateFormat("yyyy-MM-dd");
+        
         boolean bandera;
         // Recuperar los datos ingresados por el usuario
         nombre = this.jTextFieldNombre.getText();
         fechaInicio = this.jDateFechaInicio.getDate();
+        String fechaIni= formato.format(fechaInicio);
+        
         fechaFin = this.jDateFechaFin.getDate();
+        String fechaFinal= formato1.format(fechaFin);
+        
         ubicacion = this.txtUbicacion.getText();
+        
         // Crear un nuevo objeto Conferencia
         Conferencia objConferencia = new Conferencia();
+        objConferencia.setId(this.objVtnListarConferencias.getjTableListadoConferencias().getRowCount()+1);
         objConferencia.setNombre(nombre);
-        objConferencia.setFechaInicio(fechaInicio);
-        objConferencia.setFechaFin(fechaFin);
+        objConferencia.setFechaInicio(fechaIni);
+        objConferencia.setFechaFin(fechaFinal);
         objConferencia.setUbicacion(ubicacion);
 
-        //bandera = this.objServicioAlmacenamiento.almacenarConferencia(objConferencia);
+        bandera = this.objServicioAlmacenamiento.crearConferencia(objConferencia, User.idUsuario);
 
-//        if (bandera) {
-//            Utilidades.mensajeExito("El registro de la conferencia fue exitoso", "Registro exitoso");
-//            objVtnListarConferencias.llenarTabla();
-//            dispose();
-//        } else {
-//            Utilidades.mensajeError("El registro de la conferencia no se realizo", "Error en el registro");
-//        }
+        if (bandera) {
+            Utilidades.mensajeExito("El registro de la conferencia fue exitoso", "Registro exitoso");
+            objVtnListarConferencias.llenarTabla();
+            dispose();
+        } else {
+            Utilidades.mensajeError("El registro de la conferencia no se realizo", "Error en el registro");
+        }
 
 
     }//GEN-LAST:event_jButtonRegistrarActionPerformed

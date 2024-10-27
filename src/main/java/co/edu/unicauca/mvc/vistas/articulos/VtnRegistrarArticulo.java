@@ -320,14 +320,7 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
      * @param evt Evento de acción.
      */
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
-        //        private Integer id;
-//    private String titulo;
-//    private String resumen;
-//    private String palabrasClave;
-//    private String autores;
-//    private Conferencia conferencia;
-        //this.idUser = this.vtnLogin.getIdUsuario();
-        
+ 
         String titulo, resumen, palabras;
         ArrayList<Usuario> listAutores = obtenerAutoresSeleccionados(jTableAutores);
         List<Integer> idAutores = new ArrayList<>();
@@ -337,7 +330,7 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
         }
         
         Conferencia objConferencia;
-        boolean bandera;
+        boolean bandera, bandera1;
         
         titulo = this.txtTitulo.getText();
         resumen = this.txtResumen.getText();
@@ -348,18 +341,21 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
         objConferencia = objSConferencia.consultarConferenciaPorNombre(nombreConferencia);
         
         
+        
         Articulo objArticulo = new Articulo();
-        objArticulo.setId(listAutores.size());
+        
+        objArticulo.setId(this.objListarArticulo.getjTableListarArticulos().getRowCount()+1);
         objArticulo.setTitulo(titulo);
         objArticulo.setResumen(resumen);
         objArticulo.setPalabrasClave(palabras);
         objArticulo.setAutores(idAutores);
         objArticulo.setConferencia(objConferencia);
-        //objArticulo.setEstado(estado);
+        
         // Almacenar el artículo utilizando el servicio
         bandera = this.objSArticulo.crearArticulo(objArticulo, User.idUsuario);
+        bandera1 = this.objSConferencia.agregarArticulo(objConferencia.getId(), objArticulo.getId());
         // Mostrar mensaje de éxito o error
-        if (bandera == true) {
+        if (bandera == true && bandera1 == true) {
             Utilidades.mensajeExito("Registro exitoso", "Registro exitoso");
             objListarArticulo.llenarTabla();
             dispose();

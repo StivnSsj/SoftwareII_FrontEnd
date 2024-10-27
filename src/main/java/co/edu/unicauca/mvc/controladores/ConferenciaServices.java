@@ -2,9 +2,12 @@ package co.edu.unicauca.mvc.controladores;
 
 import java.util.List;
 import co.edu.unicauca.mvc.modelos.Conferencia;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
@@ -26,42 +29,68 @@ public class ConferenciaServices {
         this.objConferenciaPeticiones = ClientBuilder.newClient().register(new JacksonFeature());
     }
 
-    public Conferencia consultarConferencia(Integer id) {
-        //Conferencia objConferencia = null;
-
-        WebTarget target = this.objConferenciaPeticiones.target(this.endPoint + "/" + id);
-        Invocation.Builder objPeticion = target.request(MediaType.APPLICATION_JSON_TYPE);
-        Conferencia objConferencia = objPeticion.get(Conferencia.class);
-        return objConferencia;
-    }
-
     public List<Conferencia> listarConferencias() {
-        try {
-            WebTarget target = objConferenciaPeticiones.target(endPoint);
-            Invocation.Builder solicitud = target.request(MediaType.APPLICATION_JSON);
+        Response response = objConferenciaPeticiones
+                .target(endPoint)
+                .request(MediaType.APPLICATION_JSON)
+                .get();
 
-            Response respuesta = solicitud.get();
-
-            if (respuesta.getStatus() == 200) { // Si la respuesta es exitosa
-                return respuesta.readEntity(new GenericType<List<Conferencia>>() {
-                });
-            } else {
-                System.out.println("Error: No se pudieron obtener las conferencias. Código de respuesta: " + respuesta.getStatus());
-                return new ArrayList<>(); // Retorna una lista vacía en caso de error
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>(); // Retorna una lista vacía si ocurre una excepción
+        if (response.getStatus() == 200) {
+            // Lee la lista de conferencias desde la respuesta
+            return response.readEntity(new GenericType<List<Conferencia>>() {
+            });
+        } else {
+            System.out.println("Error al listar las conferencias. Código de respuesta: " + response.getStatus());
+            return null;
         }
     }
 
-    public Boolean eliminarConferencia(Integer id) {
-        Boolean bandera = false;
-        WebTarget target = objConferenciaPeticiones.target(this.endPoint + "/" + id);
-        bandera = target.request(MediaType.APPLICATION_JSON_TYPE).delete(Boolean.class);
-        return bandera;
+    // Método para crear una conferencia
+    public boolean crearConferencia(Conferencia conferencia, Integer idUsuario) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Convierte las fechas de LocalDate a String
+        String fechaInicioStr = LocalDate.parse(conferencia.getFechaInicio()).format(formatter);
+        String fechaFinStr = LocalDate.parse(conferencia.getFechaFin()).format(formatter);
+
+        // Asigna las fechas convertidas a la conferencia
+        conferencia.setFechaInicio(fechaInicioStr);
+        conferencia.setFechaFin(fechaFinStr);
+
+        Response response = objConferenciaPeticiones
+                .target(endPoint)
+                .queryParam("idUsuario", idUsuario)
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(conferencia, MediaType.APPLICATION_JSON));
+
+        if (response.getStatus() == 200 || response.getStatus() == 201) {
+            return true;
+        } else {
+            System.out.println("Error al crear la conferencia. Código de respuesta: " + response.getStatus());
+            return false;
+        }
     }
-    
+
+    // Método para agregar un artículo a una conferencia
+    public boolean agregarArticulo(Integer idConferencia, Integer idArticulo) {
+        // Construir la URL con el ID de la conferencia
+        String url = endPoint + "/" + idConferencia + "/articulo";
+
+        // Realizar la solicitud PUT
+        Response response = objConferenciaPeticiones
+                .target(url)
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(idArticulo, MediaType.APPLICATION_JSON));
+
+        if (response.getStatus() == 200) {
+            // Leer la conferencia actualizada desde la respuesta
+            return true;
+        } else {
+            System.out.println("Error al agregar el artículo. Código de respuesta: " + response.getStatus());
+            return false;
+        }
+    }
+
     public Conferencia consultarConferenciaPorNombre(String nombre) {
         // Construir la URL con el nombre de la conferencia
         WebTarget target = objConferenciaPeticiones.target(endPoint).path("nombre").path(nombre);
@@ -78,5 +107,5 @@ public class ConferenciaServices {
             return null;
         }
     }
-    
+
 }
