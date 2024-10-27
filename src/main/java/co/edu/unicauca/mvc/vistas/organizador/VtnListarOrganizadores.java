@@ -6,87 +6,109 @@ package co.edu.unicauca.mvc.vistas.organizador;
 
 import co.edu.unicauca.mvc.controladores.OrganizadorServicio;
 import co.edu.unicauca.mvc.modelos.Organizador;
+import co.edu.unicauca.mvc.modelos.Usuario;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Mary
  */
-
 /**
  * Clase VtnListarOrganizadores.
- * 
- * Esta clase representa una ventana interna para listar organizadores en la aplicación.
- * Permite visualizar, actualizar y registrar nuevos organizadores.
+ *
+ * Esta clase representa una ventana interna para listar organizadores en la
+ * aplicación. Permite visualizar, actualizar y registrar nuevos organizadores.
  */
-
 public class VtnListarOrganizadores extends javax.swing.JInternalFrame {
- private OrganizadorServicio objServicioAlmacenamientoOrganizadores;
-    
-     /**
+
+    private OrganizadorServicio objServicioAlmacenamientoOrganizadores;
+
+    /**
      * Constructor de la clase VtnListarOrganizadores.
-     * 
+     *
      * Inicializa la ventana y asigna el servicio de organizadores.
-     * 
-     * @param objServicioAlmacenamientoOrganizadores Instancia del servicio de organizadores.
+     *
+     * @param objServicioAlmacenamientoOrganizadores Instancia del servicio de
+     * organizadores.
      */
- 
     public VtnListarOrganizadores(OrganizadorServicio objServicioAlmacenamientoOrganizadores) {
         // Inicializa los componentes de la ventana.
         initComponents();
-        this.objServicioAlmacenamientoOrganizadores =objServicioAlmacenamientoOrganizadores;
+        this.objServicioAlmacenamientoOrganizadores = new OrganizadorServicio();
+        llenarTabla();
         // Llama al método para inicializar la tabla de organizadores.
         iniciarlizarTabla();
     }
-    
+
     /**
      * Inicializa la tabla que mostrará la lista de organizadores.
-     * 
-     * Crea un modelo de tabla con columnas específicas para los datos de los organizadores.
+     *
+     * Crea un modelo de tabla con columnas específicas para los datos de los
+     * organizadores.
      */
-    
-    private void iniciarlizarTabla()
-    {
-       DefaultTableModel model= new DefaultTableModel();       
-       model.addColumn("NOMBRE");       
-       model.addColumn("APELLIDO");
-       model.addColumn("CORREO");
-       this.jTableListadoOrganizadores.setModel(model);
+    private void iniciarlizarTabla() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("NOMBRE");
+        model.addColumn("APELLIDO");
+        model.addColumn("CORREO");
+        this.jTableListadoOrganizadores.setModel(model);
     }
-    
+
     /**
      * Limpia los datos de la tabla de organizadores.
-     * 
-     * Elimina todas las filas de la tabla para poder volver a llenarla con nuevos datos.
+     *
+     * Elimina todas las filas de la tabla para poder volver a llenarla con
+     * nuevos datos.
      */
-    
     public void limpiarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) this.jTableListadoOrganizadores.getModel();
         int filas = this.jTableListadoOrganizadores.getRowCount();
         for (int i = 0; filas > i; i++) {
             modelo.removeRow(0);
-        }        
+        }
     }
-    
+
     /**
      * Llena la tabla con la lista de organizadores.
-     * 
-     * Limpia la tabla actual y la llena con datos de organizadores obtenidos del servicio.
+     *
+     * Limpia la tabla actual y la llena con datos de organizadores obtenidos
+     * del servicio.
      */
     private void llenarTabla() {
         DefaultTableModel model = (DefaultTableModel) this.jTableListadoOrganizadores.getModel();
         limpiarTabla();
-        LinkedList<Organizador> listaOrganizadores = (LinkedList<Organizador>) this.objServicioAlmacenamientoOrganizadores.listarOrganizador();
-        // Agrega los datos de cada organizador a la tabla.
-        for (int i = 0; i < listaOrganizadores.size(); i++) {
-            String[] fila = { 
-                listaOrganizadores.get(i).getNombre(), 
-                listaOrganizadores.get(i).getApellido(), 
-                listaOrganizadores.get(i).getCorreo()
-            };
-            model.addRow(fila);
+
+        try {
+            // Asegúrate de que objServicioAlmacenamientoOrganizadores no es null
+            if (this.objServicioAlmacenamientoOrganizadores == null) {
+                throw new NullPointerException("El servicio de almacenamiento de organizadores no está inicializado.");
+            }
+
+            List<Usuario> listaOrganizadores = this.objServicioAlmacenamientoOrganizadores.listarOrganizadores();
+
+            // Verifica si la lista está vacía
+            if (listaOrganizadores == null || listaOrganizadores.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay ningún organizador.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return; // Sal del método si no hay organizadores
+            }
+
+            // Agrega los datos de cada organizador a la tabla.
+            for (Usuario organizador : listaOrganizadores) {
+                String[] fila = {
+                    organizador.getNombre(),
+                    organizador.getApellido(),
+                    organizador.getCorreo()
+                };
+                model.addRow(fila);
+            }
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Se produjo un error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -220,26 +242,27 @@ public class VtnListarOrganizadores extends javax.swing.JInternalFrame {
 
     /**
      * Maneja el evento de acción para el botón de actualizar.
-     * 
-     * Llama al método para llenar la tabla con los datos actualizados de organizadores.
-     * 
+     *
+     * Llama al método para llenar la tabla con los datos actualizados de
+     * organizadores.
+     *
      * @param evt Evento de acción que ocurre al presionar el botón.
      */
-    
+
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
         llenarTabla();
     }//GEN-LAST:event_jButtonActualizarActionPerformed
 
-        /**
+    /**
      * Maneja el evento de acción para el botón de registrar organizador.
-     * 
+     *
      * Abre la ventana para registrar un nuevo organizador.
-     * 
+     *
      * @param evt Evento de acción que ocurre al presionar el botón.
      */
-    
+
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
-        VtnRegistrarOrganizadores objVtnRegistrarOrganizadores =  new VtnRegistrarOrganizadores(this.objServicioAlmacenamientoOrganizadores);
+        VtnRegistrarOrganizadores objVtnRegistrarOrganizadores = new VtnRegistrarOrganizadores(this.objServicioAlmacenamientoOrganizadores);
         // Configura la operación de cierre.
         objVtnRegistrarOrganizadores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         objVtnRegistrarOrganizadores.setVisible(true); // Muestra la ventana para registrar organizadores.

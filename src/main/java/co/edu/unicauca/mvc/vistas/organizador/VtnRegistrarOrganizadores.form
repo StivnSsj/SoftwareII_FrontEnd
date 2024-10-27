@@ -123,7 +123,7 @@
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="jTextFieldNombre" pref="148" max="32767" attributes="0"/>
                       <Component id="jTextFieldApellido" alignment="1" max="32767" attributes="0"/>
-                      <Component id="jTextFieldUniversidad" alignment="1" max="32767" attributes="0"/>
+                      <Component id="jTextFieldCorreo" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="77" max="32767" attributes="0"/>
               </Group>
@@ -144,10 +144,10 @@
                   </Group>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jTextFieldUniversidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -181,7 +181,7 @@
             <Property name="text" type="java.lang.String" value="Correo:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldUniversidad">
+        <Component class="javax.swing.JTextField" name="jTextFieldCorreo">
         </Component>
       </SubComponents>
     </Container>

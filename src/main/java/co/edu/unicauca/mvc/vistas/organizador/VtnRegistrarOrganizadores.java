@@ -33,7 +33,7 @@ public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
      */
     public VtnRegistrarOrganizadores(OrganizadorServicio objServicioAlmacenamientoOrganizadores) {
         initComponents(); // Inicializa los componentes de la ventana.
-        this.objServicioAlmacenamientoOrganizadores=objServicioAlmacenamientoOrganizadores;
+        this.objServicioAlmacenamientoOrganizadores = new OrganizadorServicio();
     }
 
     /**
@@ -55,7 +55,7 @@ public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldApellido = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldUniversidad = new javax.swing.JTextField();
+        jTextFieldCorreo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,7 +131,7 @@ public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                     .addComponent(jTextFieldApellido)
-                    .addComponent(jTextFieldUniversidad))
+                    .addComponent(jTextFieldCorreo))
                 .addContainerGap(77, Short.MAX_VALUE))
         );
         jPanelCentralLayout.setVerticalGroup(
@@ -147,9 +147,9 @@ public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldUniversidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanelCentral, java.awt.BorderLayout.CENTER);
@@ -167,21 +167,23 @@ public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
      */
     
     private void jButtonRegistrarOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarOActionPerformed
+    String nombreOrganizador = this.jTextFieldNombre.getText();
+    String apellidoOrganizador = this.jTextFieldApellido.getText();
+    String correo = this.jTextFieldCorreo.getText(); // Campo para el correo
 
-        String nombreOrganizador=this.jTextFieldNombre.getText();
-        String apellidoOrganizador=this.jTextFieldApellido.getText();
-        String universidad= this.jTextFieldUniversidad.getText();
-        // Crea un nuevo objeto Organizador con los datos recogidos.
-        Organizador objOrganizador = new Organizador (nombreOrganizador,apellidoOrganizador, universidad);
-        // Llama al servicio para almacenar el organizador y guarda el resultado en bandera.
-        boolean bandera = objServicioAlmacenamientoOrganizadores.almacenarOrganizador(objOrganizador);
-         // Muestra un mensaje de éxito o error según el resultado del almacenamiento.
-        if(bandera){   
-            Utilidades.mensajeExito("El registro del organizador ha sido exitoso", "Registro exitoso");
-            dispose();
-        }else {   
-            Utilidades.mensajeError("El registro del organizador no ha sido posible", "Error en el registro");
-        }
+    // Crea un nuevo objeto Organizador con los datos recogidos.
+    Organizador objOrganizador = new Organizador(nombreOrganizador, apellidoOrganizador, correo);
+
+    // Llama al servicio para almacenar el organizador y guarda el resultado en bandera.
+    boolean bandera = objServicioAlmacenamientoOrganizadores.almacenarOrganizador(objOrganizador);
+
+    // Muestra un mensaje de éxito o error según el resultado del almacenamiento.
+    if (bandera) {   
+        Utilidades.mensajeExito("El registro del organizador ha sido exitoso", "Registro exitoso");
+        dispose();
+    } else {   
+        Utilidades.mensajeError("El registro del organizador no ha sido posible", "Error en el registro");
+    }
     }//GEN-LAST:event_jButtonRegistrarOActionPerformed
 
 
@@ -195,7 +197,7 @@ public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelInferior;
     private javax.swing.JPanel jPanelSuperior;
     private javax.swing.JTextField jTextFieldApellido;
+    private javax.swing.JTextField jTextFieldCorreo;
     private javax.swing.JTextField jTextFieldNombre;
-    private javax.swing.JTextField jTextFieldUniversidad;
     // End of variables declaration//GEN-END:variables
 }

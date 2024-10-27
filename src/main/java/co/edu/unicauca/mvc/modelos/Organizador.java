@@ -9,7 +9,7 @@ package co.edu.unicauca.mvc.modelos;
  * Representa un organizador dentro del sistema de conferencias.
  * Contiene información sobre el nombre, apellido y correo electrónico del organizador.
  */
-public class Organizador {
+public class Organizador extends Usuario{
     private String nombreOrganizador;
     private String apellidoOrganizador;
     private String correo;
@@ -22,9 +22,9 @@ public class Organizador {
      * @param correo Correo electrónico del organizador.
      */
     
-    public Organizador(String nombreOrganizador,String apellidoOrganizador, String correo) {
+    public Organizador(String nombreOrganizador, String apellidoOrganizador, String correo) {
         this.nombreOrganizador = nombreOrganizador;
-        this.apellidoOrganizador = apellidoOrganizador;      
+        this.apellidoOrganizador = apellidoOrganizador;
         this.correo = correo;
     }
     
