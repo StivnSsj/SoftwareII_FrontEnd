@@ -12,32 +12,36 @@ import java.util.Date;
 
 /**
  * Clase VtnRegistrarConferencia
- * 
- * Esta clase representa la ventana para registrar una nueva conferencia en la aplicación de gestión de conferencias.
- * Permite al administrador ingresar información sobre la conferencia, como el nombre, las fechas y la ubicación.
- * Se utiliza la librería Swing para la creación de la interfaz gráfica de usuario.
+ *
+ * Esta clase representa la ventana para registrar una nueva conferencia en la
+ * aplicación de gestión de conferencias. Permite al administrador ingresar
+ * información sobre la conferencia, como el nombre, las fechas y la ubicación.
+ * Se utiliza la librería Swing para la creación de la interfaz gráfica de
+ * usuario.
  */
-
 public class VtnRegistrarConferencia extends javax.swing.JFrame {
+
     // Servicio para almacenar la conferencia
     private ConferenciaServices objServicioAlmacenamiento;
     // Ventana para listar conferencias, utilizada para actualizar la vista después del registro
     private VtnListarConferencias objVtnListarConferencias;
-    
+
     /**
-     * Constructor de la clase VtnRegistrarConferencia.
-     * Inicializa los componentes gráficos y establece el servicio de almacenamiento y la ventana de listado.
-     * 
-     * @param objServicioAlmacenamiento Servicio de almacenamiento de conferencias.
-     * @param vtnListarConferencias Ventana que lista las conferencias registradas.
+     * Constructor de la clase VtnRegistrarConferencia. Inicializa los
+     * componentes gráficos y establece el servicio de almacenamiento y la
+     * ventana de listado.
+     *
+     * @param objServicioAlmacenamiento Servicio de almacenamiento de
+     * conferencias.
+     * @param vtnListarConferencias Ventana que lista las conferencias
+     * registradas.
      */
-    
     public VtnRegistrarConferencia(ConferenciaServices objServicioAlmacenamiento,
-        VtnListarConferencias vtnListarConferencias) {
+            VtnListarConferencias vtnListarConferencias) {
         initComponents();
         this.objServicioAlmacenamiento = objServicioAlmacenamiento;
         this.objVtnListarConferencias = vtnListarConferencias;
-        
+
     }
 
     /**
@@ -183,41 +187,49 @@ public class VtnRegistrarConferencia extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-     /**
-     * Maneja el evento de acción del botón "Registrar".
-     * Recupera los datos ingresados por el usuario, crea un objeto Conferencia
-     * y lo almacena utilizando el servicio correspondiente. Muestra un mensaje de
-     * éxito o error según el resultado de la operación.
-     * 
-     * @param evt Evento de acción que ocurre cuando se hace clic en el botón "Registrar".
+    /**
+     * Maneja el evento de acción del botón "Registrar". Recupera los datos
+     * ingresados por el usuario, crea un objeto Conferencia y lo almacena
+     * utilizando el servicio correspondiente. Muestra un mensaje de éxito o
+     * error según el resultado de la operación.
+     *
+     * @param evt Evento de acción que ocurre cuando se hace clic en el botón
+     * "Registrar".
      */
-    
+
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
         String nombre, ubicacion;
         Date fechaInicio, fechaFin;
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formato1 = new SimpleDateFormat("yyyy-MM-dd");
-        
+
         boolean bandera;
+
         // Recuperar los datos ingresados por el usuario
-        nombre = this.jTextFieldNombre.getText();
+        nombre = this.jTextFieldNombre.getText().trim(); // Eliminar espacios en blanco
         fechaInicio = this.jDateFechaInicio.getDate();
-        String fechaIni= formato.format(fechaInicio);
-        
         fechaFin = this.jDateFechaFin.getDate();
-        String fechaFinal= formato1.format(fechaFin);
-        
-        ubicacion = this.txtUbicacion.getText();
-        
+        ubicacion = this.txtUbicacion.getText().trim(); // Eliminar espacios en blanco
+
+        // Validar que no haya campos vacíos
+        if (nombre.isEmpty() || fechaInicio == null || fechaFin == null || ubicacion.isEmpty()) {
+            Utilidades.mensajeError("Todos los campos son obligatorios", "Error en el registro");
+            return; // Salir del método si algún campo está vacío
+        }
+
+        // Formatear las fechas
+        String fechaIni = formato.format(fechaInicio);
+        String fechaFinal = formato.format(fechaFin);
+
         // Crear un nuevo objeto Conferencia
         Conferencia objConferencia = new Conferencia();
-        objConferencia.setId(this.objVtnListarConferencias.getjTableListadoConferencias().getRowCount()+1);
+        objConferencia.setId(this.objVtnListarConferencias.getjTableListadoConferencias().getRowCount() + 1);
         objConferencia.setNombre(nombre);
         objConferencia.setFechaInicio(fechaIni);
         objConferencia.setFechaFin(fechaFinal);
         objConferencia.setUbicacion(ubicacion);
         objConferencia.setArticulos(new ArrayList<>());
 
+        // Almacenar la conferencia
         bandera = this.objServicioAlmacenamiento.crearConferencia(objConferencia, User.idUsuario);
 
         if (bandera) {
@@ -225,7 +237,7 @@ public class VtnRegistrarConferencia extends javax.swing.JFrame {
             objVtnListarConferencias.llenarTabla();
             dispose();
         } else {
-            Utilidades.mensajeError("El registro de la conferencia no se realizo", "Error en el registro");
+            Utilidades.mensajeError("El registro de la conferencia no se realizó", "Error en el registro");
         }
 
 

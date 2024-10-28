@@ -26,14 +26,14 @@ import javax.swing.UIManager;
 public class VtnLoginn extends javax.swing.JFrame {
 
     private VtnPrincipalAdmin objVtnPrincipal;
-    
-    
+
     private UsuarioServices objSUsuario = new UsuarioServices();
 
     /**
      * Creates new form VtnLoginn
      */
     public VtnLoginn() {
+        setLocation(450, 250);
         try {
             FlatMacDarkLaf.setup();
         } catch (Exception ex) {
@@ -104,21 +104,22 @@ public class VtnLoginn extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGap(59, 59, 59)
+                .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(151, 151, 151))
+                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128))))
+                        .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(113, 113, 113))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,11 +128,11 @@ public class VtnLoginn extends javax.swing.JFrame {
                 .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(16, 16, 16)
                 .addComponent(lblResultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lblResultado.getAccessibleContext().setAccessibleName("lblResultado");
@@ -144,9 +145,7 @@ public class VtnLoginn extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -154,28 +153,34 @@ public class VtnLoginn extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         System.out.println("Botón Ingresar presionado");
-        Integer idUsuario = Integer.parseInt(this.txtUsuario.getText());// Usar trim para eliminar espacios en blanco
-        
-        boolean loged = this.objSUsuario.consultarUsuario(idUsuario);
 
-        if (loged) {
-            User.idUsuario = idUsuario;
-            String rol = this.objSUsuario.consultarRolUsuario(idUsuario);
-            objVtnPrincipal.gestionRol(rol);
-            objVtnPrincipal.setVisible(true); // Abre la ventana principal
-            
-        } else {
-            lblResultado.setText("Seleccione un usuario válido");
+        // Obtener el texto del campo de usuario y aplicar trim para eliminar espacios
+        String usuarioText = this.txtUsuario.getText().trim();
+
+        // Validar que el campo no esté vacío
+        if (usuarioText.isEmpty()) {
+            lblResultado.setText("El campo de usuario no puede estar vacío");
+            return; // Salir del método si el campo está vacío
         }
 
-        // Verifica si el usuario es válido
-//        if (isValidUser(usuario)) {
-//            String rol = getUserRole(usuario);
-//            objVtnPrincipal.gestionRol(rol);
-//            objVtnPrincipal.setVisible(true); // Abre la ventana principal
-//        } else {
-//            lblResultado.setText("Seleccione un usuario válido");
-//        }
+        try {
+            // Convertir el texto a Integer
+            Integer idUsuario = Integer.parseInt(usuarioText);
+
+            boolean loged = this.objSUsuario.consultarUsuario(idUsuario);
+
+            if (loged) {
+                User.idUsuario = idUsuario;
+                String rol = this.objSUsuario.consultarRolUsuario(idUsuario);
+                objVtnPrincipal.gestionRol(rol);
+                this.txtUsuario.setText("");
+                objVtnPrincipal.setVisible(true); // Abre la ventana principal
+            } else {
+                lblResultado.setText("Seleccione un usuario válido");
+            }
+        } catch (NumberFormatException e) {
+            lblResultado.setText("Ingrese un ID de usuario válido");
+        }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed

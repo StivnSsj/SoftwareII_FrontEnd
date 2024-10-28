@@ -29,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
  * Ventana interna para registrar un nuevo artículo.
  */
 public final class VtnRegistrarArticulo extends javax.swing.JFrame {
+
     // Variables de instancia para los servicios utilizados en la ventana
     private ArticuloServices objSArticulo;
     private ConferenciaServices objSConferencia;
@@ -37,7 +38,8 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
     private List<Usuario> listUsuarios;
     private VtnListarArticulos objListarArticulo;
     private VtnLoginn vtnLogin;
-    private Integer idUser ;
+    private Integer idUser;
+
     /**
      * Constructor de la clase VtnRegistrarArticulo.
      *
@@ -60,7 +62,7 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
         cargarConferencias();
         llenarTabla();
     }
-    
+
     // Método para llenar las tablas u otros elementos que necesiten actualizarse
     /**
      * Método para inicializar la ventana y actualizar los elementos.
@@ -70,6 +72,7 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
         cargarConferencias();
         llenarTabla();
     }
+
     /**
      * Método para cargar las conferencias disponibles en el combo box.
      */
@@ -80,7 +83,8 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
             this.jComboBoxConferencia.addItem(conferencias.get(i).getNombre());
         }
     }
-     /**
+
+    /**
      * Método para limpiar la tabla de autores.
      */
 
@@ -92,15 +96,16 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
             modelo.removeRow(0);
         }
     }
+
     /**
      * Método para llenar la tabla con la lista de autores disponibles.
      */
     public void llenarTabla() {
         DefaultTableModel model = (DefaultTableModel) this.jTableAutores.getModel();
         limpiarTabla();
-        
+
         this.listUsuarios = objSUsuario.obtenerUsuariosPorRol("AUTOR");
-        
+
         if (this.listUsuarios != null) {
             for (int i = 0; i < this.listUsuarios.size(); i++) {
                 String[] fila = {this.listUsuarios.get(i).getNombre(), this.listUsuarios.get(i).getApellido()};
@@ -108,6 +113,7 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
             }
         }
     }
+
     /**
      * Método para obtener la lista de autores seleccionados en la tabla.
      *
@@ -320,49 +326,69 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
      * @param evt Evento de acción.
      */
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
- 
+
         String titulo, resumen, palabras;
         ArrayList<Usuario> listAutores = obtenerAutoresSeleccionados(jTableAutores);
         List<Integer> idAutores = new ArrayList<>();
-        
-        for(int i=0; i<listAutores.size();i++){
+
+        // Validar que se hayan seleccionado autores
+        if (listAutores.isEmpty()) {
+            Utilidades.mensajeError("Debe seleccionar al menos un autor.", "Error en el registro");
+            return; // Salir del método si no hay autores seleccionados
+        }
+
+        for (int i = 0; i < listAutores.size(); i++) {
             idAutores.add(listAutores.get(i).getId());
         }
-        
+
         Conferencia objConferencia;
         boolean bandera, bandera1;
-        
-        titulo = this.txtTitulo.getText();
-        resumen = this.txtResumen.getText();
-        palabras = this.txtPalabras.getText();
-        
+
+        titulo = this.txtTitulo.getText().trim(); // Eliminar espacios en blanco
+        resumen = this.txtResumen.getText().trim(); // Eliminar espacios en blanco
+        palabras = this.txtPalabras.getText().trim(); // Eliminar espacios en blanco
+
+        // Validar que no haya campos vacíos
+        if (titulo.isEmpty() || resumen.isEmpty() || palabras.isEmpty()) {
+            Utilidades.mensajeError("Todos los campos son obligatorios", "Error en el registro");
+            return; // Salir del método si algún campo está vacío
+        }
+
         String nombreConferencia = (String) this.jComboBoxConferencia.getSelectedItem();
-        
+
+        // Verificar si se seleccionó una conferencia
+        if (nombreConferencia == null) {
+            Utilidades.mensajeError("Debe seleccionar una conferencia.", "Error en el registro");
+            return; // Salir del método si no hay conferencia seleccionada
+        }
+
         objConferencia = objSConferencia.consultarConferenciaPorNombre(nombreConferencia);
-        
-        
-        
+
+        // Verificar si la conferencia existe
+        if (objConferencia == null) {
+            Utilidades.mensajeError("La conferencia seleccionada no es válida.", "Error en el registro");
+            return; // Salir del método si la conferencia no es válida
+        }
+
         Articulo objArticulo = new Articulo();
-        
-        objArticulo.setId(this.objListarArticulo.getjTableListarArticulos().getRowCount()+1);
+        objArticulo.setId(this.objListarArticulo.getjTableListarArticulos().getRowCount() + 1);
         objArticulo.setTitulo(titulo);
         objArticulo.setResumen(resumen);
         objArticulo.setPalabrasClave(palabras);
         objArticulo.setAutores(idAutores);
         objArticulo.setConferencia(objConferencia);
-        
+
         // Almacenar el artículo utilizando el servicio
         bandera = this.objSArticulo.crearArticulo(objArticulo, User.idUsuario);
-         
-        
         bandera1 = this.objSConferencia.agregarArticulo(objConferencia.getId(), objArticulo.getId());
+
         // Mostrar mensaje de éxito o error
-        if (bandera == true && bandera1 == true) {
+        if (bandera && bandera1) {
             Utilidades.mensajeExito("Registro exitoso", "Registro exitoso");
             objListarArticulo.llenarTabla();
             dispose();
         } else {
-            Utilidades.mensajeError("Articulo no almacenado", "Error al almacenar el articulo");
+            Utilidades.mensajeError("Artículo no almacenado", "Error al almacenar el artículo");
         }
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
 
