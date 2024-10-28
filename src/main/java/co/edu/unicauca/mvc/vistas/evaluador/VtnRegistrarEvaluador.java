@@ -7,6 +7,7 @@ import co.edu.unicauca.mvc.modelos.Articulo;
 import co.edu.unicauca.mvc.utilidades.Utilidades;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 /**
  *
  * @author Mary
@@ -14,26 +15,25 @@ import java.util.LinkedList;
 
 /**
  * Clase VtnRegistrarEvaluador.
- * 
- * Esta clase representa una ventana para registrar un nuevo evaluador en la aplicación.
+ *
+ * Esta clase representa una ventana para registrar un nuevo evaluador en la
+ * aplicación.
  */
 public class VtnRegistrarEvaluador extends javax.swing.JFrame {
 
     private EvaluadorServicio objServicio4;
-    
+
     /**
      * Constructor de la clase VtnRegistrarEvaluador.
-     * 
+     *
      * Inicializa la ventana y asigna el servicio de evaluadores.
-     * 
+     *
      * @param objServicio4 Instancia del servicio de evaluadores.
      */
-    
     public VtnRegistrarEvaluador(EvaluadorServicio objServicio4) {
         initComponents();
-        this.objServicio4=objServicio4;
+        this.objServicio4 = objServicio4;
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -170,40 +170,49 @@ public class VtnRegistrarEvaluador extends javax.swing.JFrame {
 
     /**
      * Maneja el evento de acción para el botón de registrar evaluador.
-     * 
-     * Recoge los datos ingresados en los campos de texto, crea un nuevo objeto Evaluador,
-     * y llama al servicio para almacenar el evaluador en el sistema. Muestra mensajes 
-     * de éxito o error según el resultado de la operación.
-     * 
+     *
+     * Recoge los datos ingresados en los campos de texto, crea un nuevo objeto
+     * Evaluador, y llama al servicio para almacenar el evaluador en el sistema.
+     * Muestra mensajes de éxito o error según el resultado de la operación.
+     *
      * @param evt Evento de acción que ocurre al presionar el botón.
      */
-    
+
     private void jButtonRegistrarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarEActionPerformed
         String nombreEvaluador, apellidoEvaluador, temasExperto, correo;
-    
         boolean bandera;
-        
-        nombreEvaluador=this.jTextFieldNombreE.getText();
-        apellidoEvaluador=this.jTextFieldApellido.getText();
-        //temasExperto=this.jTextAreaTemas.getText();
-        correo = this.txtCorreo.getText();
-        
-        Evaluador objEvaluador= new Evaluador();
+
+        // Obtener los datos ingresados por el usuario
+        nombreEvaluador = this.jTextFieldNombreE.getText().trim(); // Eliminar espacios en blanco
+        apellidoEvaluador = this.jTextFieldApellido.getText().trim(); // Eliminar espacios en blanco
+        // temasExperto = this.jTextAreaTemas.getText().trim(); // Puedes activar esta línea si necesitas validar temas expertos
+        correo = this.txtCorreo.getText().trim(); // Eliminar espacios en blanco
+
+        // Validar que no haya campos vacíos
+        if (nombreEvaluador.isEmpty() || apellidoEvaluador.isEmpty() || correo.isEmpty()) {
+            Utilidades.mensajeError("Todos los campos son obligatorios", "Error en el registro");
+            return; // Salir del método si algún campo está vacío
+        }
+
+        // Validar formato de correo (opcional)
+        if (!correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            Utilidades.mensajeError("Ingrese un correo electrónico válido", "Error en el registro");
+            return; // Salir del método si el formato de correo es inválido
+        }
+
+        Evaluador objEvaluador = new Evaluador();
         objEvaluador.setNombre(nombreEvaluador);
         objEvaluador.setApellido(apellidoEvaluador);
-        //objEvaluador.setTemasExperto(temasExperto);
+        // objEvaluador.setTemasExperto(temasExperto); // Descomentar si necesitas usar temasExperto
         objEvaluador.setCorreo(correo);
-        
-        bandera=this.objServicio4.almacenarEvaluador(objEvaluador);
-        
-        if(bandera==true)
-        {
+
+        bandera = this.objServicio4.almacenarEvaluador(objEvaluador);
+
+        if (bandera) {
             Utilidades.mensajeExito("Registro exitoso", "Registro exitoso");
             dispose();
-        }
-        else
-        {
-            Utilidades.mensajeError("Evaluador no almacenado","Error al almacenar el evaluador");
+        } else {
+            Utilidades.mensajeError("Evaluador no almacenado", "Error al almacenar el evaluador");
         }
     }//GEN-LAST:event_jButtonRegistrarEActionPerformed
 

@@ -8,28 +8,28 @@ import co.edu.unicauca.mvc.controladores.OrganizadorServicio;
 import co.edu.unicauca.mvc.modelos.Organizador;
 import co.edu.unicauca.mvc.utilidades.Utilidades;
 
-
 /**
  *
  * @author Mary
  */
-
 /**
  * Clase VtnRegistrarOrganizadores.
- * 
- * Esta clase representa una ventana para registrar nuevos organizadores en la aplicación.
- * Permite la entrada de datos necesarios y la validación para el registro de organizadores.
+ *
+ * Esta clase representa una ventana para registrar nuevos organizadores en la
+ * aplicación. Permite la entrada de datos necesarios y la validación para el
+ * registro de organizadores.
  */
-
 public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
 
     private OrganizadorServicio objServicioAlmacenamientoOrganizadores;
-     /**
+
+    /**
      * Constructor de la clase VtnRegistrarOrganizadores.
-     * 
+     *
      * Inicializa la ventana y asigna el servicio de organizadores.
-     * 
-     * @param objServicioAlmacenamientoOrganizadores Instancia del servicio para gestionar organizadores.
+     *
+     * @param objServicioAlmacenamientoOrganizadores Instancia del servicio para
+     * gestionar organizadores.
      */
     public VtnRegistrarOrganizadores(OrganizadorServicio objServicioAlmacenamientoOrganizadores) {
         initComponents(); // Inicializa los componentes de la ventana.
@@ -157,33 +157,47 @@ public class VtnRegistrarOrganizadores extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-        /**
+    /**
      * Maneja el evento de acción para el botón de registrar organizador.
-     * 
-     * Recoge los datos de entrada del organizador, crea una instancia de Organizador 
-     * y llama al servicio para almacenar los datos. Informa al usuario si el registro fue exitoso o no.
-     * 
+     *
+     * Recoge los datos de entrada del organizador, crea una instancia de
+     * Organizador y llama al servicio para almacenar los datos. Informa al
+     * usuario si el registro fue exitoso o no.
+     *
      * @param evt Evento de acción que ocurre al presionar el botón.
      */
-    
+
     private void jButtonRegistrarOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarOActionPerformed
-    String nombreOrganizador = this.jTextFieldNombre.getText();
-    String apellidoOrganizador = this.jTextFieldApellido.getText();
-    String correo = this.jTextFieldCorreo.getText(); // Campo para el correo
+        String nombreOrganizador = this.jTextFieldNombre.getText().trim(); // Eliminar espacios en blanco
+        String apellidoOrganizador = this.jTextFieldApellido.getText().trim(); // Eliminar espacios en blanco
+        String correo = this.jTextFieldCorreo.getText().trim(); // Eliminar espacios en blanco
 
-    // Crea un nuevo objeto Organizador con los datos recogidos.
-    Organizador objOrganizador = new Organizador(nombreOrganizador, apellidoOrganizador, correo);
+        // Validar que no haya campos vacíos
+        if (nombreOrganizador.isEmpty() || apellidoOrganizador.isEmpty() || correo.isEmpty()) {
+            Utilidades.mensajeError("Todos los campos son obligatorios", "Error en el registro");
+            return; // Salir del método si algún campo está vacío
+        }
 
-    // Llama al servicio para almacenar el organizador y guarda el resultado en bandera.
-    boolean bandera = objServicioAlmacenamientoOrganizadores.almacenarOrganizador(objOrganizador);
+        // Validar formato de correo (opcional)
+        if (!correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            Utilidades.mensajeError("Ingrese un correo electrónico válido", "Error en el registro");
+            return; // Salir del método si el formato de correo es inválido
+        }
 
-    // Muestra un mensaje de éxito o error según el resultado del almacenamiento.
-    if (bandera) {   
-        Utilidades.mensajeExito("El registro del organizador ha sido exitoso", "Registro exitoso");
-        dispose();
-    } else {   
-        Utilidades.mensajeError("El registro del organizador no ha sido posible", "Error en el registro");
-    }
+        // Crea un nuevo objeto Organizador con los datos recogidos.
+        Organizador objOrganizador = new Organizador(nombreOrganizador, apellidoOrganizador, correo);
+
+        // Llama al servicio para almacenar el organizador y guarda el resultado en bandera.
+        boolean bandera = objServicioAlmacenamientoOrganizadores.almacenarOrganizador(objOrganizador);
+
+        // Muestra un mensaje de éxito o error según el resultado del almacenamiento.
+        if (bandera) {
+            Utilidades.mensajeExito("El registro del organizador ha sido exitoso", "Registro exitoso");
+            
+            dispose();
+        } else {
+            Utilidades.mensajeError("El registro del organizador no ha sido posible", "Error en el registro");
+        }
     }//GEN-LAST:event_jButtonRegistrarOActionPerformed
 
 
