@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -54,6 +55,11 @@ public class VtnListarArticulos extends javax.swing.JInternalFrame {
         this.jTableListarArticulos.setDefaultRenderer(Object.class, new Render());
     }
 
+    public JTable getjTableListarArticulos() {
+        return jTableListarArticulos;
+    }
+
+    
     // Método para llenar las tablas u otros elementos que necesiten actualizarse
     /**
      * Método para inicializar la ventana y actualizar los elementos.
@@ -125,14 +131,15 @@ public class VtnListarArticulos extends javax.swing.JInternalFrame {
                     autoresConcatenados.append(autor.getNombre()); // Suponiendo que getNombre() devuelve el nombre del usuario
                 }
             }
-
+            Conferencia objConferencia = this.objSConferencia.consultarConferenciaPorId(articulo.getConferencia().getId());
+            
             model.addRow(new Object[]{
                 articulo.getId(),
                 articulo.getTitulo(),
                 articulo.getResumen(),
                 articulo.getPalabrasClave(),
                 autoresConcatenados.toString(),
-                articulo.getConferencia().getId(),
+                objConferencia.getNombre(),
                 articulo.getPalabrasClave()
             });
         }

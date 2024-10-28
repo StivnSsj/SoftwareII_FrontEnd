@@ -11,15 +11,15 @@ import java.util.List;
 public class Conferencia {
     private Integer id;
     private String nombre;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private String fechaInicio;
+    private String fechaFin;
     private String ubicacion;
     private List<Integer> articulos;
 
     public Conferencia() {
     }
 
-    public Conferencia(Integer id, String nombre, Date fechaInicio, Date fechaFin, String ubicacion, List<Integer> articulos) {
+    public Conferencia(Integer id, String nombre, String fechaInicio, String fechaFin, String ubicacion, List<Integer> articulos) {
         this.id = id;
         this.nombre = nombre;
         this.fechaInicio = fechaInicio;
@@ -28,6 +28,10 @@ public class Conferencia {
         this.articulos = articulos;
     }
 
+    public int retornoId(){
+        return this.articulos.size();
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -44,19 +48,19 @@ public class Conferencia {
         this.nombre = nombre;
     }
 
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public String getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -75,4 +79,6 @@ public class Conferencia {
     public void setArticulos(List<Integer> articulos) {
         this.articulos = articulos;
     }
+
+    
 }

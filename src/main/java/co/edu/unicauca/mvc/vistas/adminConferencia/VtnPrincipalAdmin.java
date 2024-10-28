@@ -35,7 +35,6 @@ public class VtnPrincipalAdmin extends javax.swing.JFrame {
     private VtnListarEvaluador objVtnListarEvaluador;
     private VtnRegistrarAutor objVtnRegistrarAutor;
     private VtnRegistrarArticulo objVtnRegistrarArticulo;
-    private VtnLoginn objLogin;
     // Declaración de servicios utilizados por la aplicación
     private ConferenciaServices objSConferencia;
     private ArticuloServices objSArticulo;
@@ -55,6 +54,7 @@ public class VtnPrincipalAdmin extends javax.swing.JFrame {
         initComponents();
         asociarServios(new ConferenciaServices(), new ArticuloServices(), new UsuarioServices());
         this.setExtendedState(JFrame.NORMAL);
+        
     }
     /**
      * Método para gestionar la visibilidad de los botones según el rol del usuario.
@@ -277,6 +277,7 @@ public class VtnPrincipalAdmin extends javax.swing.JFrame {
         if (objVtnRegistrarAutor != null) {
             objVtnRegistrarAutor.setVisible(false);
         }       
+        
         // Cierra la ventana principal
         dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
