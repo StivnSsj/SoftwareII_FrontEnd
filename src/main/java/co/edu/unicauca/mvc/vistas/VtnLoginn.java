@@ -34,6 +34,7 @@ public class VtnLoginn extends javax.swing.JFrame {
      * Creates new form VtnLoginn
      */
     public VtnLoginn() {
+        setLocation(450, 250);
         try {
             FlatMacDarkLaf.setup();
         } catch (Exception ex) {
