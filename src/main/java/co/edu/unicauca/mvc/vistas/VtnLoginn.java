@@ -1,8 +1,5 @@
 package co.edu.unicauca.mvc.vistas;
 
-import co.edu.unicauca.mvc.accesoADatos.AutorRepositorio;
-import co.edu.unicauca.mvc.accesoADatos.EvaluadorRepositorio;
-import co.edu.unicauca.mvc.accesoADatos.OrganizadorRepositorio;
 import co.edu.unicauca.mvc.controladores.ArticuloServices;
 import co.edu.unicauca.mvc.controladores.AutorServicio;
 import co.edu.unicauca.mvc.controladores.ConferenciaServices;

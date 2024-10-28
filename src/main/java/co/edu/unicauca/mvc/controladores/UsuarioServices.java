@@ -132,7 +132,4 @@ public class UsuarioServices {
             return null;
         }
     }
-
-    //crear
-    //validar rol
 }
