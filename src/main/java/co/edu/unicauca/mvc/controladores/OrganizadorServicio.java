@@ -25,6 +25,7 @@ public class OrganizadorServicio {
 
     private String endPointUsuarios;
     private Client client;
+    private OrganizadorServicio organizadorServicio;
 
     /**
      * Constructor de la clase OrganizadorServicio.
@@ -32,6 +33,7 @@ public class OrganizadorServicio {
     public OrganizadorServicio() {
         this.endPointUsuarios = "http://localhost:8080/api/usuarios"; // Endpoint de usuarios
         this.client = ClientBuilder.newClient().register(new JacksonFeature());
+        //this.organizadorServicio = organizadorServicio; //
     }
 
     
@@ -62,7 +64,7 @@ public class OrganizadorServicio {
      */
     public boolean almacenarOrganizador(Organizador organizador) {
         // Primero, obtenemos la lista actual de usuarios para contar el ID.
-        List<Usuario> listaUsuarios = listarUsuarios(); 
+        List<Usuario> listaUsuarios = listarUsuarios();
         int nuevoId = listaUsuarios.size() + 1; 
 
         // Creamos un nuevo objeto Usuario

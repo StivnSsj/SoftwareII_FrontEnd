@@ -119,7 +119,7 @@ public class VtnPrincipalAdmin extends javax.swing.JFrame {
         this.objVtnListarConferencias = new VtnListarConferencias(this.objSConferencia);
                 this.jDesktopPanelPrincipal.add(this.objVtnListarConferencias);
 
-        this.objVtnListarEvaluador = new VtnListarEvaluador(this.objSArticulo, this.objServicio4);
+        this.objVtnListarEvaluador = new VtnListarEvaluador(this.objSArticulo, this.objServicio4, objServicio3);
         this.jDesktopPanelPrincipal.add(this.objVtnListarEvaluador);
 
         this.objVtnRegistrarOrganizadores = new VtnListarOrganizadores(this.objServicio3);

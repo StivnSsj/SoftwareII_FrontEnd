@@ -45,7 +45,7 @@ public class VtnAsignarEvaluador extends javax.swing.JFrame {
         this.objSArticulo = objSArticulo;
         this.idArticulo = idArticulo;
         this.objListarArticulo = objListarArticulo;
-        listEvaluadores = (ArrayList<Evaluador>) objSEvaluador.listarEvaluadores();
+        //listEvaluadores = (ArrayList<Evaluador>) objSEvaluador.listarEvaluadores();
         llenarTabla();
     }
     /**
@@ -87,7 +87,7 @@ public class VtnAsignarEvaluador extends javax.swing.JFrame {
     public void llenarTabla() {
         DefaultTableModel model = (DefaultTableModel) this.jTableEvaluadores.getModel();
         limpiarTabla();
-        ArrayList<Evaluador> listEvaluadores = (ArrayList<Evaluador>) this.objSEvaluador.listarEvaluadores();
+        //ArrayList<Evaluador> listEvaluadores = (ArrayList<Evaluador>) this.objSEvaluador.listarEvaluadores();
 
         for (int i = 0; i < listEvaluadores.size(); i++) {
             Object[] fila = {

@@ -4,52 +4,62 @@ import co.edu.unicauca.mvc.controladores.ArticuloServices;
 import co.edu.unicauca.mvc.controladores.EvaluadorServicio;
 import co.edu.unicauca.mvc.modelos.Articulo;
 import co.edu.unicauca.mvc.modelos.Evaluador;
+import co.edu.unicauca.mvc.modelos.Rol;
+import co.edu.unicauca.mvc.modelos.Usuario;
 import co.edu.unicauca.mvc.utilidades.Utilidades;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Mary
  */
-
 /**
  * Clase VtnActualizarEvaluador.
- * 
- * Esta clase representa una ventana (JFrame) para actualizar la información
- * de un evaluador en la aplicación. Proporciona la funcionalidad para cargar 
- * los datos de un evaluador específico en la interfaz gráfica, permitiendo 
- * al usuario modificar y guardar los cambios.
+ *
+ * Esta clase representa una ventana (JFrame) para actualizar la información de
+ * un evaluador en la aplicación. Proporciona la funcionalidad para cargar los
+ * datos de un evaluador específico en la interfaz gráfica, permitiendo al
+ * usuario modificar y guardar los cambios.
  */
-
 public class VtnActualizarEvaluador extends javax.swing.JFrame {
 
-    private ArticuloServices objServicio1;
-    private EvaluadorServicio objServicio4;
+    private ArticuloServices objSArticulo;
+    private EvaluadorServicio objSEvaluador;
+
     /**
      * Constructor para crear la ventana de actualización de evaluadores
-     * @param objServicio1 Servicio de gestión de artículos
-     * @param objServicio4 Servicio de gestión de evaluadores
+     *
+     * @param objSArticulo Servicio de gestión de artículos
+     * @param objSEvaluador Servicio de gestión de evaluadores
      */
     public VtnActualizarEvaluador(
-            ArticuloServices objServicio1,
-            EvaluadorServicio objServicio4) {
+            ArticuloServices objSArticulo,
+            EvaluadorServicio objSEvaluador) {
         initComponents();
-        this.objServicio1=objServicio1;
-        this.objServicio4=objServicio4;
+        this.objSArticulo = objSArticulo;
+        this.objSEvaluador = objSEvaluador;
     }
+
     /**
      * Carga los datos del evaluador en los campos del formulario
+     *
      * @param idEvaluador Identificador del evaluador a actualizar
      */
-    public void cargarDatos(int idEvaluador)
-    {
-        Evaluador objEvaluador=this.objServicio4.consultarEvaluador(idEvaluador);
-        this.jTextFieldId.setText(objEvaluador.getId()+"");
-        this.jTextFieldNombre.setText(objEvaluador.getNombre());
-        this.jTextFieldApellido.setText(objEvaluador.getApellido());
-        this.jTextAreaTemas.setText(objEvaluador.getTemas());
+    public void cargarDatos(int idEvaluador) {
+        Usuario usuario = objSEvaluador.consultarEvaluador(idEvaluador); // Obtener Usuario desde la API
+
+        if (usuario != null) {
+            txtIdAct.setText(String.valueOf(usuario.getId())); // ID no editable
+            txtNomAct.setText(usuario.getNombre());
+            txtApeAct.setText(usuario.getApellido());
+            txtCorreoAct.setText(usuario.getCorreo());
+            System.out.println("Datos cargados: " + usuario.getNombre() + ", " + usuario.getApellido() + ", " + usuario.getCorreo());
+        } else {
+            System.out.println("No se encontró un usuario con ID: " + idEvaluador);
+        }
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,12 +78,11 @@ public class VtnActualizarEvaluador extends javax.swing.JFrame {
         jLabelId = new javax.swing.JLabel();
         jLabelNombre = new javax.swing.JLabel();
         jLabelApellido = new javax.swing.JLabel();
-        jLabelTemas = new javax.swing.JLabel();
-        jTextFieldId = new javax.swing.JTextField();
-        jTextFieldNombre = new javax.swing.JTextField();
-        jTextFieldApellido = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextAreaTemas = new javax.swing.JTextArea();
+        lblCorreo = new javax.swing.JLabel();
+        txtIdAct = new javax.swing.JTextField();
+        txtNomAct = new javax.swing.JTextField();
+        txtApeAct = new javax.swing.JTextField();
+        txtCorreoAct = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,33 +151,29 @@ public class VtnActualizarEvaluador extends javax.swing.JFrame {
         jLabelApellido.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         jLabelApellido.setText("Apellido:");
 
-        jLabelTemas.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
-        jLabelTemas.setText("Temas Experto: ");
+        lblCorreo.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        lblCorreo.setText("Temas Experto: ");
 
-        jTextFieldId.setEditable(false);
-
-        jTextAreaTemas.setColumns(20);
-        jTextAreaTemas.setRows(5);
-        jScrollPane2.setViewportView(jTextAreaTemas);
+        txtIdAct.setEditable(false);
 
         javax.swing.GroupLayout jPanelCentralLayout = new javax.swing.GroupLayout(jPanelCentral);
         jPanelCentral.setLayout(jPanelCentralLayout);
         jPanelCentralLayout.setHorizontalGroup(
             jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCentralLayout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+                .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelApellido)
                     .addComponent(jLabelNombre)
                     .addComponent(jLabelId)
-                    .addComponent(jLabelTemas))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                    .addComponent(lblCorreo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jTextFieldApellido)
-                    .addComponent(jTextFieldNombre)
-                    .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addComponent(txtApeAct, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                    .addComponent(txtNomAct)
+                    .addComponent(txtIdAct, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCorreoAct, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanelCentralLayout.setVerticalGroup(
             jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,20 +181,20 @@ public class VtnActualizarEvaluador extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelId)
-                    .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelNombre)
-                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNomAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelApellido)
-                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtApeAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCentralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelTemas)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                    .addComponent(lblCorreo)
+                    .addComponent(txtCorreoAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanelCentral, java.awt.BorderLayout.CENTER);
@@ -198,7 +203,33 @@ public class VtnActualizarEvaluador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-        //llenarTabla();
+        int id = Integer.parseInt(txtIdAct.getText());
+        String nombre = txtNomAct.getText();
+        String apellido = txtApeAct.getText();
+        String correo = txtCorreoAct.getText();
+
+        // Crear objeto Rol para el evaluador
+        Rol rolEvaluador = new Rol(); // Asegúrate de que Rol tenga un constructor adecuado
+        rolEvaluador.setId(2); // Asumiendo que el ID para "EVALUADOR" es 2
+        rolEvaluador.setNombre("EVALUADOR");
+
+        // Crear objeto Usuario con los nuevos datos
+        Usuario usuarioActualizado = new Usuario(
+                id, // Asegúrate de que este ID es correcto
+                nombre,
+                apellido,
+                correo,
+                rolEvaluador // Asignar el rol "EVALUADOR"
+        );
+
+        // Llamar al servicio para actualizar el evaluador (Usuario en la API)
+        boolean actualizado = objSEvaluador.actualizarEvaluador(usuarioActualizado);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "Evaluador actualizado exitosamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el evaluador.");
+        }
     }//GEN-LAST:event_jButtonActualizarActionPerformed
 
 
@@ -208,14 +239,13 @@ public class VtnActualizarEvaluador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelApellido;
     private javax.swing.JLabel jLabelId;
     private javax.swing.JLabel jLabelNombre;
-    private javax.swing.JLabel jLabelTemas;
     private javax.swing.JPanel jPanelCentral;
     private javax.swing.JPanel jPanelInferior;
     private javax.swing.JPanel jPanelSuperior;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextAreaTemas;
-    private javax.swing.JTextField jTextFieldApellido;
-    private javax.swing.JTextField jTextFieldId;
-    private javax.swing.JTextField jTextFieldNombre;
+    private javax.swing.JLabel lblCorreo;
+    private javax.swing.JTextField txtApeAct;
+    private javax.swing.JTextField txtCorreoAct;
+    private javax.swing.JTextField txtIdAct;
+    private javax.swing.JTextField txtNomAct;
     // End of variables declaration//GEN-END:variables
 }

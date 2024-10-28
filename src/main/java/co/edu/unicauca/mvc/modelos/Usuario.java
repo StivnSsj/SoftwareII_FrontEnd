@@ -1,15 +1,31 @@
-
 package co.edu.unicauca.mvc.modelos;
 
 public class Usuario {
+
     private Integer id;
     private String nombre;
     private String apellido;
     private String correo;
     private String password;
     private Rol rol;
+    private String temas;
 
     public Usuario() {
+    }
+
+    public Usuario(int id, String nombre, String apellido, String correo, Rol rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.rol = rol;
+    }
+
+    public Usuario(Integer id, String nombre, String apellido, String correo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
     }
 
     public Usuario(Integer id, String nombre, String apellido, String correo, String password, Rol rol) {
@@ -19,6 +35,10 @@ public class Usuario {
         this.correo = correo;
         this.password = password;
         this.rol = rol;
+    }
+
+    public String getTemas() {
+        return temas;
     }
 
     public Integer getId() {
@@ -68,5 +88,5 @@ public class Usuario {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-    
+
 }
