@@ -7,6 +7,7 @@ import co.edu.unicauca.mvc.utilidades.Utilidades;
 import java.awt.Color;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -215,6 +216,7 @@ public class VtnRegistrarConferencia extends javax.swing.JFrame {
         objConferencia.setFechaInicio(fechaIni);
         objConferencia.setFechaFin(fechaFinal);
         objConferencia.setUbicacion(ubicacion);
+        objConferencia.setArticulos(new ArrayList<>());
 
         bandera = this.objServicioAlmacenamiento.crearConferencia(objConferencia, User.idUsuario);
 

@@ -70,6 +70,22 @@ public class ConferenciaServices {
             return false;
         }
     }
+    
+    // Método para consultar conferencia por ID
+    public Conferencia consultarConferenciaPorId(Integer id) {
+        Response response = objConferenciaPeticiones
+            .target(endPoint + "/" + id)
+            .request(MediaType.APPLICATION_JSON)
+            .get();
+
+        if (response.getStatus() == 200) {
+            // Leer la conferencia desde la respuesta
+            return response.readEntity(Conferencia.class);
+        } else {
+            System.out.println("Error al consultar la conferencia. Código de respuesta: " + response.getStatus());
+            return null;
+        }
+    }
 
     // Método para agregar un artículo a una conferencia
     public boolean agregarArticulo(Integer idConferencia, Integer idArticulo) {

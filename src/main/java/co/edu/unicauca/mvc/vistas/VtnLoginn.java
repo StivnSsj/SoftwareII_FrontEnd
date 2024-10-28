@@ -26,16 +26,6 @@ import javax.swing.UIManager;
 public class VtnLoginn extends javax.swing.JFrame {
 
     private VtnPrincipalAdmin objVtnPrincipal;
-
-//    private Integer idUsuario;
-//
-//    public Integer getIdUsuario() {
-//        return idUsuario;
-//    }
-//
-//    public void setIdUsuario(Integer idUsuario) {
-//        this.idUsuario = idUsuario;
-//    }
     
     
     private UsuarioServices objSUsuario = new UsuarioServices();
@@ -173,6 +163,7 @@ public class VtnLoginn extends javax.swing.JFrame {
             String rol = this.objSUsuario.consultarRolUsuario(idUsuario);
             objVtnPrincipal.gestionRol(rol);
             objVtnPrincipal.setVisible(true); // Abre la ventana principal
+            
         } else {
             lblResultado.setText("Seleccione un usuario válido");
         }

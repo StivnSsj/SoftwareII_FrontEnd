@@ -131,14 +131,15 @@ public class VtnListarArticulos extends javax.swing.JInternalFrame {
                     autoresConcatenados.append(autor.getNombre()); // Suponiendo que getNombre() devuelve el nombre del usuario
                 }
             }
-
+            Conferencia objConferencia = this.objSConferencia.consultarConferenciaPorId(articulo.getConferencia().getId());
+            
             model.addRow(new Object[]{
                 articulo.getId(),
                 articulo.getTitulo(),
                 articulo.getResumen(),
                 articulo.getPalabrasClave(),
                 autoresConcatenados.toString(),
-                articulo.getConferencia().getId(),
+                objConferencia.getNombre(),
                 articulo.getPalabrasClave()
             });
         }

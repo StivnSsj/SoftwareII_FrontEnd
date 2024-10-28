@@ -353,6 +353,8 @@ public final class VtnRegistrarArticulo extends javax.swing.JFrame {
         
         // Almacenar el artículo utilizando el servicio
         bandera = this.objSArticulo.crearArticulo(objArticulo, User.idUsuario);
+         
+        
         bandera1 = this.objSConferencia.agregarArticulo(objConferencia.getId(), objArticulo.getId());
         // Mostrar mensaje de éxito o error
         if (bandera == true && bandera1 == true) {
