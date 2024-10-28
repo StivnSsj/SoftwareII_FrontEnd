@@ -2,121 +2,145 @@ package co.edu.unicauca.mvc.vistas.evaluador;
 
 import co.edu.unicauca.mvc.controladores.ArticuloServices;
 import co.edu.unicauca.mvc.controladores.EvaluadorServicio;
+import co.edu.unicauca.mvc.controladores.OrganizadorServicio;
 import javax.swing.table.DefaultTableModel;
 import co.edu.unicauca.mvc.modelos.Articulo;
 import co.edu.unicauca.mvc.modelos.Evaluador;
+import co.edu.unicauca.mvc.modelos.Usuario;
 import co.edu.unicauca.mvc.utilidades.Utilidades;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Mary
  */
-
 /**
  * Clase VtnListarEvaluador.
- * 
- * Esta clase representa una ventana interna (JInternalFrame) que permite 
+ *
+ * Esta clase representa una ventana interna (JInternalFrame) que permite
  * listar, eliminar y actualizar evaluadores en la aplicación.
  */
-
 public class VtnListarEvaluador extends javax.swing.JInternalFrame {
+
     // Atributos para los servicios utilizados en la clase
-    public ArticuloServices objServicio; // Servicio para gestionar artículos.
-    public EvaluadorServicio objServicio4; // Servicio para gestionar evaluadores.
-    
+    public ArticuloServices objSArticulo; // Servicio para gestionar artículos.
+    public EvaluadorServicio objSEvaluador; // Servicio para gestionar evaluadores.
+    private OrganizadorServicio organizadorServicio;
+
     /**
      * Constructor de la clase VtnListarEvaluador.
-     * 
+     *
      * Inicializa la ventana y asigna los servicios de artículos y evaluadores.
-     * También configura el renderizador de la tabla y llama al método para 
+     * También configura el renderizador de la tabla y llama al método para
      * inicializar la tabla.
-     * 
-     * @param objServicio Instancia del servicio de artículos.
-     * @param objServicio4 Instancia del servicio de evaluadores.
+     *
+     * @param objSArticulo Instancia del servicio de artículos.
+     * @param objSEvaluador Instancia del servicio de evaluadores.
      */
-    
     public VtnListarEvaluador(
-            ArticuloServices objServicio,
-            EvaluadorServicio objServicio4) {
+            ArticuloServices objSArticulo,
+            EvaluadorServicio objSEvaluador,
+            OrganizadorServicio organizadorServicio
+    ) {
         // Inicializa los componentes de la ventana.
         initComponents();
-        this.objServicio=objServicio;  // Asigna el servicio de artículos.
-        this.objServicio4=objServicio4; // Asigna el servicio de evaluadores.
+        this.objSArticulo = objSArticulo;  // Asigna el servicio de artículos.
+        //this.objSEvaluador = objSEvaluador; // Asigna el servicio de evaluadores.
         this.jTableListarEvaluadores.setDefaultRenderer(Object.class, new RenderE()); // Configura el renderizador de la tabla.
         // Llama al método para inicializar la tabla.
         inicializarTabla();
+        this.objSEvaluador = new EvaluadorServicio();
+        llenarTabla();
+        this.organizadorServicio = organizadorServicio;
     }
-    
+
     /**
      * Inicializa la tabla para listar evaluadores.
-     * 
-     * Configura el modelo de la tabla, añadiendo las columnas necesarias:
-     * "Id", "Nombre", "Apellido", "Eliminar" y "Actualizar".
+     *
+     * Configura el modelo de la tabla, añadiendo las columnas necesarias: "Id",
+     * "Nombre", "Apellido", "Eliminar" y "Actualizar".
      */
-    
-     private void inicializarTabla()
-    {
-       DefaultTableModel model= new DefaultTableModel();       
-       model.addColumn("ID");       
-       model.addColumn("NOMBRE");
-       model.addColumn("APELLIDO");
-       model.addColumn("CORREO");
-       model.addColumn("TEMAS EXPERTO");
-       model.addColumn("ELIMINAR");
-       model.addColumn("ACTUALIZAR");       
-       this.jTableListarEvaluadores.setModel(model);
+    private void inicializarTabla() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("NOMBRE");
+        model.addColumn("APELLIDO");
+        model.addColumn("CORREO");
+        model.addColumn("ELIMINAR");
+        model.addColumn("ACTUALIZAR");
+        this.jTableListarEvaluadores.setModel(model);
     }
-     /**
+
+    /**
      * Limpia la tabla de evaluadores.
-     * 
+     *
      * Elimina todas las filas de la tabla actual.
      */
-     public void limpiarTabla(){
-        
-        DefaultTableModel modelo=(DefaultTableModel) this.jTableListarEvaluadores.getModel();
-        int filas=this.jTableListarEvaluadores.getRowCount();
-        for (int i = 0;filas>i; i++) {
-            modelo.removeRow(0);
-        }        
-    }
-     /**
-     * Llena la tabla con los datos de los evaluadores.
-     * 
-     * Limpia la tabla y luego obtiene la lista de evaluadores del servicio, 
-     * añadiendo los datos a la tabla junto con botones de "Eliminar" y "Actualizar".
-     */
-    private void llenarTabla()
-    {
-        DefaultTableModel model=(DefaultTableModel) this.jTableListarEvaluadores.getModel();
-        limpiarTabla();
-        ArrayList<Evaluador> listarEvaluadores
-                = (ArrayList<Evaluador>) this.objServicio4.listarEvaluadores();
-        // Crea un botón para eliminar evaluadores.
-        JButton JButtonEliminarEvaluador = new JButton();
-        JButtonEliminarEvaluador.setName("Eliminar");
-        JButtonEliminarEvaluador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remove.png")));
-        // Crea un botón para actualizar evaluadores.
-        JButton JButtonActualizarEvaluador = new JButton();
-        JButtonActualizarEvaluador.setName("Actualizar");
-        JButtonActualizarEvaluador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/aplicar.png")));
+    public void limpiarTabla() {
 
-        // Recorre la lista de evaluadores y añade sus datos a la tabla.
-        for (int i = 0; i < listarEvaluadores.size(); i++) {
-            Object [] fila= { 
-                listarEvaluadores.get(i).getId(),
-                listarEvaluadores.get(i).getNombre(),
-                listarEvaluadores.get(i).getApellido(),
-                listarEvaluadores.get(i).getCorreo(),
-                listarEvaluadores.get(i).getTemas(),
-                JButtonEliminarEvaluador,
-                JButtonActualizarEvaluador};
-            model.addRow(fila);
+        DefaultTableModel modelo = (DefaultTableModel) this.jTableListarEvaluadores.getModel();
+        int filas = this.jTableListarEvaluadores.getRowCount();
+        for (int i = 0; filas > i; i++) {
+            modelo.removeRow(0);
         }
-        
+    }
+
+    /**
+     * Llena la tabla con los datos de los evaluadores.
+     *
+     * Limpia la tabla y luego obtiene la lista de evaluadores del servicio,
+     * añadiendo los datos a la tabla junto con botones de "Eliminar" y
+     * "Actualizar".
+     */
+    private void llenarTabla() {
+        DefaultTableModel model = (DefaultTableModel) this.jTableListarEvaluadores.getModel();
+        limpiarTabla();
+
+        try {
+            // Inicializa el servicio si es necesario
+            if (this.objSEvaluador == null) {
+                this.objSEvaluador = new EvaluadorServicio();
+            }
+
+            List<Usuario> listaEvaluadores = this.objSEvaluador.listarEvaluadores();
+
+            // Verifica si la lista está vacía
+            if (listaEvaluadores == null || listaEvaluadores.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay ningún evaluador.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return; // Sal del método si no hay evaluadores
+            }
+
+            // Crea botones para eliminar y actualizar evaluadores
+            JButton JButtonEliminarEvaluador = new JButton();
+            JButtonEliminarEvaluador.setName("Eliminar");
+            JButtonEliminarEvaluador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/remove.png")));
+
+            JButton JButtonActualizarEvaluador = new JButton();
+            JButtonActualizarEvaluador.setName("Actualizar");
+            JButtonActualizarEvaluador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/aplicar.png")));
+
+            // Recorre la lista de evaluadores y añade sus datos a la tabla.
+            for (Usuario evaluador : listaEvaluadores) {
+                Object[] fila = {
+                    evaluador.getId(), // ID del evaluador
+                    evaluador.getNombre(), // Nombre del evaluador
+                    evaluador.getApellido(), // Apellido del evaluador
+                    evaluador.getCorreo(), // Correo del evaluador
+                    JButtonEliminarEvaluador, // Botón de eliminar
+                    JButtonActualizarEvaluador // Botón de actualizar
+                };
+                model.addRow(fila);
+            }
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Se produjo un error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -253,9 +277,9 @@ public class VtnListarEvaluador extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     /**
      * Maneja el evento de acción para el botón de actualizar.
-     * 
+     *
      * Llama al método llenarTabla() para refrescar los datos mostrados.
-     * 
+     *
      * @param evt Evento de acción que ocurre.
      */
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
@@ -264,68 +288,64 @@ public class VtnListarEvaluador extends javax.swing.JInternalFrame {
 
     /**
      * Maneja el evento de acción para el botón de registrar un nuevo evaluador.
-     * 
+     *
      * Abre la ventana para registrar un nuevo evaluador.
-     * 
+     *
      * @param evt Evento de acción que ocurre.
      */
-    
+
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
-        VtnRegistrarEvaluador objVtnRegistrarEvaluador=new VtnRegistrarEvaluador(objServicio4);
+        VtnRegistrarEvaluador objVtnRegistrarEvaluador = new VtnRegistrarEvaluador(objSEvaluador);
         objVtnRegistrarEvaluador.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         objVtnRegistrarEvaluador.setVisible(true);
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
-    
+
     /**
      * Maneja el evento de clic en la tabla de evaluadores.
-     * 
-     * Detecta si se ha hecho clic en un botón de "Eliminar" o "Actualizar"
-     * y realiza la acción correspondiente.
-     * 
+     *
+     * Detecta si se ha hecho clic en un botón de "Eliminar" o "Actualizar" y
+     * realiza la acción correspondiente.
+     *
      * @param evt Evento de mouse que ocurre.
      */
-    
+
     private void jTableListarEvaluadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableListarEvaluadoresMouseClicked
         int column = this.jTableListarEvaluadores.getColumnModel().getColumnIndexAtX(evt.getX());
-        int row = evt.getY()/jTableListarEvaluadores.getRowHeight();
-        
-        if(row < jTableListarEvaluadores.getRowCount() && row >= 0 && column < jTableListarEvaluadores.getColumnCount() && column >= 0){
+        int row = evt.getY() / jTableListarEvaluadores.getRowHeight();
+
+        if (row < jTableListarEvaluadores.getRowCount() && row >= 0 && column < jTableListarEvaluadores.getColumnCount() && column >= 0) {
             Object value = jTableListarEvaluadores.getValueAt(row, column);
-            
-            if(value instanceof JButton){
-                
-                ((JButton)value).doClick();
+
+            if (value instanceof JButton) {
+
+                ((JButton) value).doClick();
                 JButton boton = (JButton) value;
-                
+
                 String idEvaluador = jTableListarEvaluadores.getValueAt(row, 0).toString();
-                int idEvaluadorConvertido=Integer.parseInt(idEvaluador);
-                if(boton.getName().equals("Eliminar")){
-                    try{  
-                        if(Utilidades.mensajeConfirmacion("¿ Estás seguro de que quieres eliminar el evaluador con identificador " + idEvaluador + " " 
-                            +" ?", "Confirmación") == 0){
-                           boolean bandera=this.objServicio4.eliminarEvaluador(idEvaluadorConvertido);
-                           if(bandera==true)
-                           {
-                               Utilidades.mensajeExito("El evaluador con identificador " + idEvaluadorConvertido + " fue eliminado exitosamente", "Evaluador eliminado");
-                               llenarTabla();
-                           }
-                           else
-                           {
-                               Utilidades.mensajeAdvertencia("El evaluador con identificador " + idEvaluadorConvertido + " no fue eliminado", "Error al eliminar");
-                        
-                           }
+                int idEvaluadorConvertido = Integer.parseInt(idEvaluador);
+                if (boton.getName().equals("Eliminar")) {
+                    try {
+                        if (Utilidades.mensajeConfirmacion("¿Estás seguro de que quieres eliminar el evaluador con identificador " + idEvaluador + "?", "Confirmación") == 0) {
+                            boolean bandera = this.objSEvaluador.eliminarEvaluador(idEvaluadorConvertido);
+                            if (bandera) {
+                                Utilidades.mensajeExito("El evaluador con identificador " + idEvaluadorConvertido + " fue eliminado exitosamente", "Evaluador eliminado");
+                                llenarTabla();
+                            } else {
+                                System.out.println("Error: La eliminación falló en el servidor o el evaluador no existe.");
+                                Utilidades.mensajeAdvertencia("El evaluador con identificador " + idEvaluadorConvertido + " no fue eliminado", "Error al eliminar");
+                            }
                         }
-                    }catch(Exception ex){
-                        Utilidades.mensajeError("Error al eliminar usuario. Intentelo de nuevo más tarde", "Error");
-                    }  
-                }
-                else if(boton.getName().equals("Actualizar")){
-                    VtnActualizarEvaluador objVtnActualizarEvaluador= 
-                            new VtnActualizarEvaluador(objServicio, objServicio4);
+                    } catch (Exception ex) {
+                        System.out.println("Excepción al intentar eliminar: " + ex.getMessage());
+                        Utilidades.mensajeError("Error al eliminar usuario. Inténtelo de nuevo más tarde", "Error");
+                    }
+                } else if (boton.getName().equals("Actualizar")) {
+                    VtnActualizarEvaluador objVtnActualizarEvaluador
+                            = new VtnActualizarEvaluador(objSArticulo, objSEvaluador);
                     objVtnActualizarEvaluador.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     objVtnActualizarEvaluador.cargarDatos(idEvaluadorConvertido);
                     objVtnActualizarEvaluador.setVisible(true);
-                            
+
                 }
             }
         }

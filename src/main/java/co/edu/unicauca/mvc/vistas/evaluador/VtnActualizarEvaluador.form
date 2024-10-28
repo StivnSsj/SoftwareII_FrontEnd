@@ -137,21 +137,21 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace pref="38" max="32767" attributes="0"/>
+                  <EmptySpace pref="37" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelApellido" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelId" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelTemas" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="52" max="32767" attributes="0"/>
+                  <EmptySpace pref="50" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jScrollPane2" max="32767" attributes="0"/>
-                      <Component id="jTextFieldApellido" max="32767" attributes="0"/>
-                      <Component id="jTextFieldNombre" max="32767" attributes="0"/>
-                      <Component id="jTextFieldId" alignment="0" min="-2" pref="234" max="-2" attributes="0"/>
+                      <Component id="txtApeAct" pref="238" max="32767" attributes="0"/>
+                      <Component id="txtNomAct" max="32767" attributes="0"/>
+                      <Component id="txtIdAct" alignment="0" min="-2" pref="234" max="-2" attributes="0"/>
+                      <Component id="txtCorreoAct" alignment="0" pref="238" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="37" max="32767" attributes="0"/>
+                  <EmptySpace pref="36" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -161,24 +161,24 @@
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelId" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextFieldId" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtIdAct" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelNombre" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextFieldNombre" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNomAct" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabelApellido" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextFieldApellido" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtApeAct" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabelTemas" min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblCorreo" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCorreoAct" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace pref="54" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -208,7 +208,7 @@
             <Property name="text" type="java.lang.String" value="Apellido:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabelTemas">
+        <Component class="javax.swing.JLabel" name="lblCorreo">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Trebuchet MS" size="14" style="0"/>
@@ -216,30 +216,17 @@
             <Property name="text" type="java.lang.String" value="Temas Experto: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldId">
+        <Component class="javax.swing.JTextField" name="txtIdAct">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldNombre">
+        <Component class="javax.swing.JTextField" name="txtNomAct">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldApellido">
+        <Component class="javax.swing.JTextField" name="txtApeAct">
         </Component>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextAreaTemas">
-              <Properties>
-                <Property name="columns" type="int" value="20"/>
-                <Property name="rows" type="int" value="5"/>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
+        <Component class="javax.swing.JTextField" name="txtCorreoAct">
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
