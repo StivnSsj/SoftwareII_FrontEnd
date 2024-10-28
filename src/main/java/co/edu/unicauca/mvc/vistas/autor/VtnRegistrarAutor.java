@@ -5,31 +5,33 @@ import co.edu.unicauca.mvc.modelos.Autor;
 import co.edu.unicauca.mvc.utilidades.Utilidades;
 
 /**
- * Clase VtnRegistrarAutor.
- * Esta clase representa una ventana interna que permite registrar nuevos autores en el sistema.
- * Extiende javax.swing.JInternalFrame.
- * 
+ * Clase VtnRegistrarAutor. Esta clase representa una ventana interna que
+ * permite registrar nuevos autores en el sistema. Extiende
+ * javax.swing.JInternalFrame.
+ *
  * @author SANTIAGO DORADO
  */
-
 public class VtnRegistrarAutor extends javax.swing.JInternalFrame {
 // Servicio utilizado para manejar las operaciones relacionadas con los autores.
+
     private AutorServicio objSAutor;
+
     /**
-    * Crea una nueva instancia de la ventana VtnRegistrarAutor.
-    * 
-    */
-    
+     * Crea una nueva instancia de la ventana VtnRegistrarAutor.
+     *
+     */
+
     public VtnRegistrarAutor(AutorServicio objSAutor) {
         initComponents();
-        this.objSAutor = objSAutor;
+        this.objSAutor = new AutorServicio();
     }
 
-    private void limpiar(){
+    private void limpiar() {
         txtNombre.setText("");
         txtApellido.setText("");
         txtCorreo.setText("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -159,10 +161,10 @@ public class VtnRegistrarAutor extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     /**
-     * Acción realizada al hacer clic en el botón Registrar.
-     * Este método recoge los datos introducidos por el usuario, crea una nueva instancia
-     * de Autor y utiliza el servicio de autores para registrar el nuevo autor.
-     * 
+     * Acción realizada al hacer clic en el botón Registrar. Este método recoge
+     * los datos introducidos por el usuario, crea una nueva instancia de Autor
+     * y utiliza el servicio de autores para registrar el nuevo autor.
+     *
      */
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         String nombre, apellido, correo;
@@ -177,13 +179,15 @@ public class VtnRegistrarAutor extends javax.swing.JInternalFrame {
         objAutor.setApellido(apellido);
         objAutor.setCorreo(correo);
 
-        bandera = this.objSAutor.registrarAutor(objAutor);
+        bandera = this.objSAutor.almacenarAutor(objAutor);
 
-        if (bandera){
+        if (bandera) {
             Utilidades.mensajeExito("El registro del autor fue exitoso", "Registro exitoso");
             limpiar();
-        }else
-            Utilidades.mensajeError("El registro del autor no se realizo", "Error en el registro");
+        } else {
+            Utilidades.mensajeError("El registro del autor no se realizó", "Error en el registro");
+        }
+
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
 
